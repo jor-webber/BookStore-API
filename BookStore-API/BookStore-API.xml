@@ -26,7 +26,7 @@
             <summary>
             Create an Author
             </summary>
-            <param name="author">Author object</param>
+            <param name="authorDTO">Author object</param>
             <returns></returns>
         </member>
         <member name="M:BookStore_API.Controllers.AuthorsController.Update(System.Int32,BookStore_API.DTOs.AuthorUpdateDTO)">
@@ -50,10 +50,24 @@
         </member>
         <member name="M:BookStore_API.Controllers.BooksController.GetBook(System.Int32)">
             <summary>
-            
+            Gets a book with given id
             </summary>
-            <param name="id"></param>
-            <returns></returns>
+            <param name="id">Id of the book</param>
+            <returns>A book record</returns>
+        </member>
+        <member name="M:BookStore_API.Controllers.BooksController.Create(BookStore_API.DTOs.BookCreateDTO)">
+            <summary>
+            Creates a new book
+            </summary>
+            <param name="bookDTO">Book payload</param>
+            <returns>Book object</returns>
+        </member>
+        <member name="M:BookStore_API.Controllers.BooksController.Delete(System.Int32)">
+            <summary>
+            Deletes a book
+            </summary>
+            <param name="id">Id of book</param>
+            <returns>No content</returns>
         </member>
         <member name="T:BookStore_API.Controllers.HomeController">
             <summary>
@@ -78,6 +92,13 @@
             Add a value
             </summary>
             <param name="value"></param>
+        </member>
+        <member name="M:BookStore_API.Controllers.UsersController.Login(BookStore_API.DTOs.UserDTO)">
+            <summary>
+            User login endpoint
+            </summary>
+            <param name="userDTO"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
