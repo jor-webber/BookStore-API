@@ -39,6 +39,7 @@ namespace BookStore_UI
             services.AddScoped<ApiAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
             services.AddScoped<JwtSecurityTokenHandler>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
         }
 
