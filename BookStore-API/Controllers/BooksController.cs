@@ -76,7 +76,7 @@ namespace BookStore_API.Controllers
                     _logger.LogWarn($"{location}: Failed to retrieve record with id: {id}");
                     return NotFound();
                 }
-                var response = _mapper.Map<IList<BookDTO>>(book);
+                var response = _mapper.Map<BookDTO>(book);
                 _logger.LogInfo($"{location}: Successful");
                 return Ok(response);
             }
