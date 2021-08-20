@@ -1,19 +1,25 @@
 ﻿@page "/authors/"
+@attribute [Authorize]
 
 @inject IAuthorRepository _repo
 
 <h3 class="card-title">Authors</h3>
+<hr />
+<br />
+
 @if (Model == null)
 {
     <LoadingMessage Message="Loading Authors..." />
 }
 else
 {
-    <AuthorizeView Roles="Administrator">
-        <a href="/authors/create" class="btn btn-primary">
-            <span class="oi oi-plus"></span> Create New Author
-        </a>
-    </AuthorizeView>
+<AuthorizeView Roles="Administrator">
+    <a href="/authors/create" class="btn btn-primary">
+        <span class="oi oi-plus"></span> Create New Author
+    </a>
+    <br />
+    <br />
+</AuthorizeView>
     if (Model.Count < 1)
     {
         <LoadingMessage Message="There are no Authors to display. Please create new author" />

@@ -1,0 +1,146 @@
+﻿@page "/books/create/"
+@attribute [Authorize(Roles = "Administrator")]
+
+@inject IBookRepository _bookRepo
+@inject IAuthorRepository _authorRepo
+@inject NavigationManager _navManager
+@inject IFileUpload _fileUpload
+@inject IToastService _toastService
+
+<h3>Create New Book</h3>
+<hr />
+<br />
+
+@if (!isSuccess)
+{
+    <ErrorMessage Message="Something went wrong with the creation of the book." />
+}
+
+<EditForm Model="Model" OnValidSubmit="HandleCreate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="title">Book Title</label>
+        <InputText @bind-Value="Model.Title" class="form-control" id="title" />
+    </div>
+    <div class="form-group">
+        <label for="year">Year of Publishing</label>
+        <InputNumber @bind-Value="Model.Year" class="form-control" id="year" />
+    </div>
+    <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <InputText @bind-Value="Model.Isbn" class="form-control" id="isbn" />
+    </div>
+    <div class="form-group">
+        <label for="price">Price</label>
+        <InputNumber @bind-Value="Model.Price" class="form-control" id="title" />
+    </div>
+    <div class="form-group">
+        <label for="author">Author</label>
+        <select @bind="Model.AuthorId" class="form-control" id="author">
+            <option value="">--- Select Author ---</option>
+            @if (Authors != null)
+            {
+                foreach (var author in Authors)
+                {
+                    <option value="@author.Id">@author.FirstName @author.LastName</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="summary">Book Summary</label>
+        <InputTextArea @bind-Value="Model.Summary" class="form-control" id="summary" />
+    </div>
+    <div class="form-group">
+        <label for="bookCover">Book Cover Photo</label>
+        <BlazorInputFile.InputFile OnChange="HandleFileSelection" />
+        @if (isInvalidFileType)
+        {
+            <ErrorMessage Message="Please remove the invalid file type and select a new image, or leave this field blank" />
+        }
+        @if (!string.IsNullOrEmpty(imageDataUrl))
+        {
+            <img src="@imageDataUrl" style="height: 100px; width: 100px;" />
+        }
+    </div>
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span> Create Book
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-arrow-left"></span> Back to List
+    </button>
+</EditForm>
+
+@code {
+    private Book Model = new Book();
+    private IList<Author> Authors;
+    private IFileListEntry file;
+    private MemoryStream msFile;
+    private bool isSuccess = true;
+    private bool isInvalidFileType = false;
+
+    private string imageDataUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Authors = await _authorRepo.Get(Endpoints.AuthorsEndpoint);
+    }
+
+    private async Task HandleCreate()
+    {
+        if (!isInvalidFileType)
+        {
+            if (file != null)
+            {
+                var ext = Path.GetExtension(file.Name);
+                var picId = Guid.NewGuid().ToString().Replace("-", "");
+                var picName = $"{picId}{ext}";
+
+                await _fileUpload.UploadFile(file, msFile, picName);
+
+                Model.Image = picName;
+            }
+
+            isSuccess = await _bookRepo.Create(Endpoints.BooksEndpoint, Model);
+            if (isSuccess)
+            {
+                _toastService.ShowSuccess("Book Created Successfully");
+                BackToList();
+            }
+        }
+    }
+
+    private async Task HandleFileSelection(IFileListEntry[] files)
+    {
+        file = files.FirstOrDefault();
+        if (file != null)
+        {
+            var name = file.Name;
+            if (name.Contains("jpg") || name.Contains("png") || name.Contains("jpeg"))
+            {
+                msFile = new MemoryStream();
+                await file.Data.CopyToAsync(msFile);
+
+                var reader = new StreamReader(file.Data);
+                var imageBase64Data = Convert.ToBase64String(msFile.ToArray());
+                imageDataUrl = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                isInvalidFileType = false;
+            }
+            else
+            {
+                isInvalidFileType = true;
+                imageDataUrl = String.Empty;
+            }
+        }
+        else
+        {
+            isInvalidFileType = false;
+        }
+    }
+
+    private void BackToList()
+    {
+        _navManager.NavigateTo("/books/");
+    }
+}

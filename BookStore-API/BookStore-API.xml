@@ -76,30 +76,6 @@
             <param name="id">Id of book</param>
             <returns>No content</returns>
         </member>
-        <member name="T:BookStore_API.Controllers.HomeController">
-            <summary>
-            This is a test API controller
-            </summary>
-        </member>
-        <member name="M:BookStore_API.Controllers.HomeController.Get">
-            <summary>
-            Gets values
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:BookStore_API.Controllers.HomeController.Get(System.Int32)">
-            <summary>
-            Gets a value
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BookStore_API.Controllers.HomeController.Post(System.String)">
-            <summary>
-            Add a value
-            </summary>
-            <param name="value"></param>
-        </member>
         <member name="M:BookStore_API.Controllers.UsersController.Register(BookStore_API.DTOs.UserDTO)">
             <summary>
             

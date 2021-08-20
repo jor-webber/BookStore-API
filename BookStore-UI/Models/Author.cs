@@ -16,7 +16,6 @@ namespace BookStore_UI.Models
         [Required]
         [DisplayName("Last Name")]
         public string LastName { get; set; }
-        [Required]
         [DisplayName("Biography")]
         [StringLength(250)]
         public string Bio { get; set; }

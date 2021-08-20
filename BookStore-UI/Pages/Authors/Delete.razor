@@ -2,8 +2,11 @@
 @attribute [Authorize(Roles = "Administrator")]
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
+@inject IToastService _toastService
 
 <h3 class="card-title">Are You Sure You Want To Delete This Author?</h3>
+<hr />
+<br />
 
 @if (isFailed)
 {
@@ -20,15 +23,15 @@ else
         <h4>Author Details</h4>
         <table class="table table-responsive">
             <tr>
-                <td>First Name</td>
+                <th>First Name</th>
                 <td>@Model.FirstName</td>
             </tr>
             <tr>
-                <td>Last Name</td>
+                <th>Last Name</th>
                 <td>@Model.LastName</td>
             </tr>
             <tr>
-                <td>Biography</td>
+                <th>Biography</th>
                 <td>@Model.Bio</td>
             </tr>
         </table>
@@ -82,6 +85,7 @@ else
         var isSuccess = await _repo.Delete(Endpoints.AuthorsEndpoint, Model.Id);
         if (isSuccess)
         {
+            _toastService.ShowSuccess("Author Deleted Successfully");
             BackToList();
         }
         else

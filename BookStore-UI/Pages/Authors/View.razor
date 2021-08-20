@@ -3,6 +3,10 @@
 @inject IAuthorRepository _repo
 @inject NavigationManager _navManager
 
+<h4>Author Details</h4>
+<hr />
+<br />
+
 @if (Model == null)
 {
     <LoadingMessage Message="Loading Author..." />
@@ -10,18 +14,17 @@
 else
 {
 <div class="col-md-4">
-    <h4>Author Details</h4>
     <table class="table table-responsive">
         <tr>
-            <td>First Name</td>
+            <th>First Name</th>
             <td>@Model.FirstName</td>
         </tr>
         <tr>
-            <td>Last Name</td>
+            <th>Last Name</th>
             <td>@Model.LastName</td>
         </tr>
         <tr>
-            <td>Biography</td>
+            <th>Biography</th>
             <td>@Model.Bio</td>
         </tr>
     </table>
@@ -49,7 +52,7 @@ else
     }
 </div>
 }
-
+<br />
 <button @onclick="BackToList" class="btn btn-outline-secondary">
     <span class="oi oi-arrow-left"></span> Back to List
 </button>
